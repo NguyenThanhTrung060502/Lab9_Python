@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="background-color: rgb(65, 57, 137); display: flex; justify-content: center;">
+    <div style="width: 800px; border-radius: 20px; background-color: white; padding: 40px;">
+        <div style="border-radius: 8px; background: red; width: 100%; text-align: center;">
+            <h1 style="color: white; margin: 18px 12px;">{{ error }}</h1>
+        </div>
+        <h2>Введите название города, который вы посетили, и дату, когда вы посетили</h2>
+        <form method="post" action="/city" style="display: flex; align-items: center; flex-direction: column;">
+            <label style="width: 100%;">
+                Название города
+                <br/>
+                <input type="text" name="city_name"
+                       style="
+                            width: 100%;
+                            margin-top: 8px;
+                            margin-bottom: 24px;
+                            border-radius: 4px;
+                            padding: 16px;
+                            box-sizing: border-box;
+                            "
+                       placeholder="Пожалуйста, введите название города">
+            </label>
+            <label style="width: 100%;">
+                Дата посещения города (до сегодняшнего дня)
+                <br/>
+                <input type="date" name="visit_date"
+                       style="
+                            width: 100%;
+                            margin-top: 8px;
+                            margin-bottom: 24px;
+                            border-radius: 4px;
+                            padding: 16px;
+                            box-sizing: border-box;
+                            "
+                       placeholder="Пожалуйста, введите дату посещения">
+            </label>
+            <button type="submit" style="
+                                        background-color: forestgreen;
+                                        color: white;
+                                        border-radius: 20px;
+                                        padding: 8px;
+                                        box-shadow: none;
+                                        width: 200px;
+                                        border: none;
+                                        ">Добавить город</button>
+        </form>
+
+        <h2>Список посещений:</h2>
+        <table style="width: 100%; border: none;">
+            <tr style="background: #000;">
+                <th style="padding: 18px 12px; text-align: left; color: white;">Дата посещения</th>
+                <th style="padding: 18px 12px; text-align: right; color: white;">Название города</th>
+            </tr>
+            {% for city in cities %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background: #EEEEEE">
+                        <td style="padding: 18px 12px; text-align: left;">{{ city.city_name }}</td>
+                        <td style="padding: 18px 12px; text-align: right;">{{ city.visit_date }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td style="padding: 18px 12px; text-align: left;">{{ city.city_name }}</td>
+                        <td style="padding: 18px 12px; text-align: right;">{{ city.visit_date }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        <div style="display: flex; align-items: center; flex-direction: column;">
+            <button type="submit"
+                    style="
+                        background-color: darkred;
+                        color: white;
+                        border-radius: 20px;
+                        padding: 8px;
+                        box-shadow: none;
+                        width: 200px;
+                        margin-top: 24px;
+                        border: none;
+                    "
+                    onclick="
+                        fetch('/city',  {
+                            method: 'DELETE'
+                        })
+                        .then(() => window.location.href = '/');
+                    "
+            >
+                Удалить все
+            </button>
+        </div>
+    </div>
+</body>
+</html>
